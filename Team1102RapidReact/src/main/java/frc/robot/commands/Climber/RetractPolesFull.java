@@ -25,10 +25,7 @@ public class RetractPolesFull extends CommandBase {
 
         m_climb.ClimberPolesToSetpoint(Constants.ClimberRetractedFull);
 
-        if(time.hasElapsed(0.3))
-            m_climb.ClimberArmToSetpoint(Constants.ArmStandby);
-
-        if(m_climb.ClimberPoleLeftError() < 50 && m_climb.ClimberPoleRightError() < 50 && m_climb.ClimberArmError() < 3)
+        if(m_climb.ClimberPoleLeftError() < 3000 && m_climb.ClimberPoleRightError() < 3000)
             isFinished = true;
 
     }

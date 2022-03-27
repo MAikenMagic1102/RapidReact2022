@@ -83,8 +83,8 @@ public final class Constants {
 
     public static final double Climber_kP = 0.1;
 
-    public static final int TurretRightLimit = 3900;
-    public static final int TurretLeftLimit = 1863;
+    public static final int TurretLeftLimit = 3300;
+    public static final int TurretRightLimit  = 5260;
 
     //Low Goal Fender Shot Constants
     public static final double ShooterHoodClose = 32;
@@ -95,7 +95,7 @@ public final class Constants {
 
     public static InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble> kHoodMap = new InterpolatingTreeMap<>();
     static {
-        kHoodMap.put(new InterpolatingDouble(71.00), new InterpolatingDouble(31.00));
+        kHoodMap.put(new InterpolatingDouble(61.00), new InterpolatingDouble(31.00));
         kHoodMap.put(new InterpolatingDouble(71.00), new InterpolatingDouble(33.00));
         kHoodMap.put(new InterpolatingDouble(81.00), new InterpolatingDouble(35.00));
         kHoodMap.put(new InterpolatingDouble(92.0), new InterpolatingDouble(36.00));
@@ -106,7 +106,7 @@ public final class Constants {
 
     public static InterpolatingTreeMap<InterpolatingDouble, InterpolatingDouble> kRPMMap = new InterpolatingTreeMap<>();
     static {
-        kRPMMap.put(new InterpolatingDouble(71.00), new InterpolatingDouble(3250.00));
+        kRPMMap.put(new InterpolatingDouble(61.00), new InterpolatingDouble(3250.00));
         kRPMMap.put(new InterpolatingDouble(71.00), new InterpolatingDouble(3400.00));
         kRPMMap.put(new InterpolatingDouble(81.0), new InterpolatingDouble(3470.00));
         kRPMMap.put(new InterpolatingDouble(92.0), new InterpolatingDouble(3500.00));
@@ -118,12 +118,12 @@ public final class Constants {
     //To get value do the following
     //kRPMMap.getInterpolated(new InterpolatingDouble(distance).value);
 
-    public static final double ClimberExtendedFull = 2500.00;
-    public static final double ClimberExtendedShort = 400.0;
-    public static final double ClimberRetractedFull = 150.0;
+    public static final double ClimberExtendedFull = 159400.00;
+    public static final double ClimberExtendedShort = 80000.0;
+    public static final double ClimberRetractedFull = 50.0;
 
-    public static final double ArmStandby = 132.0;
-    public static final double ArmOnBar = 143.0;
+    public static final double ArmStandby = 26000.0;
+    public static final double ArmOnBar = 61000.0;
     public static final double ArmRobotTiltedDown = 173.0;
     public static final double ArmPolesTiltedtoBar = 0.0;
 }

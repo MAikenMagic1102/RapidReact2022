@@ -17,10 +17,10 @@ public class TiltPolesontoBar extends CommandBase {
     @Override 
     public void execute(){
 
-        m_climb.ClimberArmToSetpoint(Constants.ArmPolesTiltedtoBar);
+        // m_climb.ClimberArmToSetpoint(Constants.ArmPolesTiltedtoBar);
 
-        if(m_climb.ClimberArmError() < 3)
-            isFinished = true;
+        // if(m_climb.ClimberArmError() < 3)
+        //     isFinished = true;
 
     }
 

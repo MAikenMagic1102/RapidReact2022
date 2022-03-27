@@ -41,7 +41,6 @@ public class AutoShoot extends CommandBase {
         if(!timer.hasElapsed(1)){
             m_Turret.NearLimelightControl(0);
             m_Feeder.Feed(m_shooter.ShooterReady());
-            m_intake.FrontTunnelIn();
             m_intake.RearTunnelIn();
         }
 

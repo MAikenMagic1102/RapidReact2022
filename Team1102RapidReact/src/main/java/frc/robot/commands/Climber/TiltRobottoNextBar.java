@@ -17,10 +17,10 @@ public class TiltRobottoNextBar extends CommandBase {
     @Override 
     public void execute(){
 
-        m_climb.ClimberArmToSetpoint(Constants.ArmRobotTiltedDown);
+        // m_climb.ClimberArmToSetpoint(Constants.ArmRobotTiltedDown);
 
-        if(m_climb.ClimberArmError() < 3)
-            isFinished = true;
+        // if(m_climb.ClimberArmError() < 3)
+        //     isFinished = true;
 
     }
 

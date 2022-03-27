@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.DefaultDrive;
+import frc.robot.commands.Climber.ClimberCommands;
+import frc.robot.commands.Climber.Stage1;
 import frc.robot.commands.Autonomous;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -18,14 +20,17 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj.Joystick;
 
 import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.ClimberArm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Turret;
+import frc.robot.subsystems.Infastructure;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -43,8 +48,11 @@ public class RobotContainer {
   private final Turret turret = new Turret();
   private final Shooter shooter = new Shooter();
   private final Climber climber = new Climber();
+  private final ClimberArm arm = new ClimberArm();
+  private final Infastructure base = new Infastructure();
   
   private final Autonomous m_autoCommand = new Autonomous(driveTrain, intake, feeder, shooter, turret);
+  private final ClimberCommands climb = new ClimberCommands(climber, arm);
 
   private final Joystick driver1 = new Joystick(0);
 
@@ -57,6 +65,8 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
+    base.setDefaultCommand(new RunCommand(base::Enabled, base));
+
     driveTrain.setDefaultCommand(new DefaultDrive(
       driveTrain,
       () -> driver1.getRawAxis(1) * -1, 
@@ -68,7 +78,10 @@ public class RobotContainer {
       () -> turret.Rotate_OpenLoop(operator.getRawAxis(4), climber.ClimberEnabled()), turret)); 
 
     climber.setDefaultCommand(new RunCommand(
-      () -> climber.ClimberOpenLoop(driver1.getRawAxis(5), operator.getRawAxis(1) * -1), climber));
+      () -> climber.ClimberOpenLoop(operator.getRawAxis(1) * -1), climber));
+
+    arm.setDefaultCommand(new RunCommand(
+      () -> arm.ClimberOpenLoop(driver1.getRawAxis(5)), arm));
 
   }
 
@@ -95,18 +108,19 @@ public class RobotContainer {
 
     new JoystickButton(operator, 5)
     .whileHeld(new InstantCommand(() -> shooter.ShooterAutoRange(turret.limelight_range()), shooter))
-    //.whenPressed(new InstantCommand(() -> shooter.ShooterHood_toPosition(35), shooter))
     .whileHeld(new InstantCommand(() -> feeder.Feed(shooter.ShooterReady()), feeder))
     .whileHeld(new InstantCommand(() -> intake.Shoot(shooter.ShooterReady()), intake))
+    .whileHeld(new InstantCommand(base::Disable, base))
     .whileHeld(new RunCommand(() -> turret.NearLimelightControl(operator.getRawAxis(0))))
     .whenReleased(new InstantCommand(turret::turret_Stop, turret)) 
     .whenReleased(new InstantCommand(intake::ShootFinished, intake))
     .whenReleased(new InstantCommand(feeder::StopFeed, feeder))
+    .whenReleased(new InstantCommand(base::Enabled, base))
     .whenReleased(new InstantCommand(() -> shooter.ShooterTarget(0), shooter));
 
 
     new JoystickButton(operator, 6)
-    .whenPressed(new InstantCommand(() -> shooter.ShooterTarget(1800), shooter))
+    .whenPressed(new InstantCommand(() -> shooter.ShooterTarget(Constants.ShooterSpeedClose), shooter))
     .whenPressed(new InstantCommand(() -> shooter.ShooterHood_toPosition(Constants.ShooterHoodClose), shooter))
     .whileHeld(new InstantCommand(() -> feeder.Feed(shooter.ShooterReady()), feeder))
     .whileHeld(new InstantCommand(() -> intake.Shoot(shooter.ShooterReady()), intake))
@@ -114,9 +128,8 @@ public class RobotContainer {
     .whenReleased(new InstantCommand(feeder::StopFeed, feeder))
     .whenReleased(new InstantCommand(() -> shooter.ShooterTarget(0), shooter));
 
-    new JoystickButton(operator, 2)
-    .whileHeld(new RunCommand(() -> turret.MidLimelightControl(operator.getRawAxis(0))))
-    .whenReleased(new InstantCommand(turret::turret_Stop, turret));
+    new POVButton(operator, 0)
+    .whenPressed(climb.pullUpFromGround());
 
     new JoystickButton(operator, 1)
     .whileHeld(new RunCommand(() -> turret.NearLimelightControl(operator.getRawAxis(0))))
@@ -127,7 +140,8 @@ public class RobotContainer {
     .whenReleased(new InstantCommand(climber::ClimberPoleStop, climber));
 
     new JoystickButton(operator, 8)
-    .whenPressed(new InstantCommand(climber::ClimberEnable, climber));
+    .whenPressed(new InstantCommand(climber::ClimberEnable, climber))
+    .whenPressed(new InstantCommand(arm::ClimberArmEnable, arm));
 
     new JoystickButton(operator, 4)
     .whileActiveOnce(new InstantCommand(climber::ClimberExtend, climber));

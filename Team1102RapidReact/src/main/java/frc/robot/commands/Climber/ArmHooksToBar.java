@@ -17,10 +17,10 @@ public class ArmHooksToBar extends CommandBase {
     @Override 
     public void execute(){
 
-        m_climb.ClimberArmToSetpoint(Constants.ArmOnBar);
+        // m_climb.ClimberArmToSetpoint(Constants.ArmOnBar);
 
-        if(m_climb.ClimberArmError() < 3)
-            isFinished = true;
+        // if(m_climb.ClimberArmError() < 1000)
+        //     isFinished = true;
 
     }
 

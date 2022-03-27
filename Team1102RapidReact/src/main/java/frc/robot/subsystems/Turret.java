@@ -23,6 +23,8 @@ public class Turret extends SubsystemBase {
 
     double distance = 0;
 
+    boolean targeting = false;
+
     public Turret(){
         turretMotor = new WPI_TalonSRX(Constants.turret);
         turretMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, Constants.CTRE_TimeoutMS);
@@ -37,6 +39,7 @@ public class Turret extends SubsystemBase {
     }
 
     public void NearLimelightControl(double input){
+        targeting = true;
         limelight.setPipeline(0);
         limelight.setLedMode(LightMode.eOn);
         if(limelight.isTarget()){
@@ -48,6 +51,7 @@ public class Turret extends SubsystemBase {
     }
 
     public void MidLimelightControl(double input){
+        targeting = true;
         limelight.setPipeline(1);
         limelight.setLedMode(LightMode.eOn);
         if(limelight.isTarget()){
@@ -59,6 +63,7 @@ public class Turret extends SubsystemBase {
     }
 
     public void FarLimelightControl(double input){
+        targeting = true;
         limelight.setPipeline(2);
         limelight.setLedMode(LightMode.eOn);
         if(limelight.isTarget()){
@@ -73,32 +78,33 @@ public class Turret extends SubsystemBase {
     public void turret_Stop(){
         turretMotor.set(ControlMode.PercentOutput, 0.0);
         limelight.setLedMode(LightMode.eOff);
+        targeting = false;
     }
 
     public void ClimbPosition(){
-        turretMotor.set(ControlMode.Position, 2953);
+        //turretMotor.set(ControlMode.Position, 2953);
     }
 
     public void Rotate_OpenLoop(double rotation, boolean ClimberMode){
-        if(ClimberMode){
-            ClimbPosition();
-        }else{
+        // if(ClimberMode){
+        //     ClimbPosition();
+        // }else{
         
-        if((rotation > 0 && (turretMotor.getSelectedSensorPosition() > Constants.TurretRightLimit))){
-            turretMotor.set(ControlMode.PercentOutput, 0.0);
-        } else{
-            if((rotation < 0 && (turretMotor.getSelectedSensorPosition() < Constants.TurretLeftLimit))){
-                turretMotor.set(ControlMode.PercentOutput, 0.0);
-            }else{
+        // if((rotation > 0 && (turretMotor.getSelectedSensorPosition() > Constants.TurretRightLimit))){
+        //     turretMotor.set(ControlMode.PercentOutput, 0.0);
+        // } else{
+        //     if((rotation < 0 && (turretMotor.getSelectedSensorPosition() < Constants.TurretLeftLimit))){
+        //         turretMotor.set(ControlMode.PercentOutput, 0.0);
+        //     }else{
                 turretMotor.set(ControlMode.PercentOutput, Math.abs(rotation) > 0.1 ? rotation * 0.5 : 0 );
-            }
-        }
-    }
+          //  }
+      //}
+    
     }
 
     public boolean robot_InRange(){
         double distance = limelight.getDistance();
-        return distance > 80 && distance < 120;
+        return distance > 60 && distance < 120;
     }
 
     public double limelight_range(){
@@ -109,7 +115,7 @@ public class Turret extends SubsystemBase {
     public void periodic() {
         SmartDashboard.putNumber("Turret Position", turretMotor.getSelectedSensorPosition());
         SmartDashboard.putNumber("Distance", limelight.getDistance());
-        SmartDashboard.putBoolean("Target", limelight.isTarget());
+        SmartDashboard.putBoolean("Target", limelight.isTarget() && targeting);
         SmartDashboard.putBoolean("Robot In Range?", robot_InRange());
     }
 }
