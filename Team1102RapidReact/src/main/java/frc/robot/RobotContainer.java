@@ -11,8 +11,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.DefaultDrive;
-import frc.robot.commands.Climber.ClimberCommands;
-import frc.robot.commands.Climber.Stage1;
+import frc.robot.commands.Climber.*;
 import frc.robot.commands.Autonomous;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -52,7 +51,6 @@ public class RobotContainer {
   private final Infastructure base = new Infastructure();
   
   private final Autonomous m_autoCommand = new Autonomous(driveTrain, intake, feeder, shooter, turret);
-  private final ClimberCommands climb = new ClimberCommands(climber, arm);
 
   private final Joystick driver1 = new Joystick(0);
 
@@ -129,7 +127,13 @@ public class RobotContainer {
     .whenReleased(new InstantCommand(() -> shooter.ShooterTarget(0), shooter));
 
     new POVButton(operator, 0)
-    .whenPressed(climb.pullUpFromGround());
+    .whenPressed(new Stage1(climber, arm));
+
+    new POVButton(operator, 90)
+    .whenPressed(new Stage2(climber, arm));
+
+    new POVButton(operator, 180)
+    .whenPressed(new Stage3(climber, arm));
 
     new JoystickButton(operator, 1)
     .whileHeld(new RunCommand(() -> turret.NearLimelightControl(operator.getRawAxis(0))))
@@ -142,6 +146,7 @@ public class RobotContainer {
     new JoystickButton(operator, 8)
     .whenPressed(new InstantCommand(climber::ClimberEnable, climber))
     .whenPressed(new InstantCommand(arm::ClimberArmEnable, arm));
+    //.whenPressed(new InstantCommand(intake::ClimbPosition, intake));
 
     new JoystickButton(operator, 4)
     .whileActiveOnce(new InstantCommand(climber::ClimberExtend, climber));

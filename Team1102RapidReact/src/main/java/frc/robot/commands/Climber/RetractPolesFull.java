@@ -15,19 +15,11 @@ public class RetractPolesFull extends CommandBase {
     }
 
     boolean isFinished = false;
-    Timer time = new Timer();
 
     @Override 
     public void execute(){
-        if(time.get() == 0){
-            time.start();
-        }
-
         m_climb.ClimberPolesToSetpoint(Constants.ClimberRetractedFull);
-
-        if(m_climb.ClimberPoleLeftError() < 3000 && m_climb.ClimberPoleRightError() < 3000)
-            isFinished = true;
-
+        isFinished = true;
     }
 
     // Make this return true when this Command no longer needs to run execute()

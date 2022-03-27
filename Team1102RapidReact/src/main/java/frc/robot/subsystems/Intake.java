@@ -55,6 +55,10 @@ public class Intake extends SubsystemBase{
         intakeSolenoid.set(true);
     }
 
+    public void ClimbPosition(){
+        intakeSolenoid.set(true);
+    }
+
     public void IntakeOut(){
         //frontIntakeMotor.set(ControlMode.PercentOutput, -0.70);
         rearIntakeMotor.set(ControlMode.PercentOutput, -0.70);

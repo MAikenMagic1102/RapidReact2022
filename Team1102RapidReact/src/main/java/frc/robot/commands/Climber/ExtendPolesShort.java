@@ -18,9 +18,7 @@ public class ExtendPolesShort extends CommandBase{
     @Override 
     public void execute(){
         m_climb.ClimberPolesToSetpoint(Constants.ClimberExtendedShort);
-        if(m_climb.ClimberPoleLeftError() < 3000 && m_climb.ClimberPoleRightError() < 3000)
-            isFinished = true;
-
+        isFinished = true;
     }
 
     // Make this return true when this Command no longer needs to run execute()

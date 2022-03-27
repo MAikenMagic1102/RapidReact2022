@@ -118,12 +118,13 @@ public final class Constants {
     //To get value do the following
     //kRPMMap.getInterpolated(new InterpolatingDouble(distance).value);
 
-    public static final double ClimberExtendedFull = 159400.00;
-    public static final double ClimberExtendedShort = 80000.0;
-    public static final double ClimberRetractedFull = 50.0;
+    public static final double ClimberExtendedFull = 165400.00;
+    public static final double ClimberExtendedShortS1 = 14500.0;
+    public static final double ClimberExtendedShort = 40000.0;
+    public static final double ClimberRetractedFull = 600.0;
 
     public static final double ArmStandby = 26000.0;
-    public static final double ArmOnBar = 61000.0;
+    public static final double ArmOnBar = 110000.0;
     public static final double ArmRobotTiltedDown = 173.0;
     public static final double ArmPolesTiltedtoBar = 0.0;
 }

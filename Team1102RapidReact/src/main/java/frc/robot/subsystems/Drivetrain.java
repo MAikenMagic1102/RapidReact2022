@@ -30,8 +30,8 @@ public class Drivetrain extends SubsystemBase{
 
     DifferentialDrive drive;
 
-    private SlewRateLimiter speedLimiter = new SlewRateLimiter(3);
-    private SlewRateLimiter rotLimiter = new SlewRateLimiter(3);
+    private SlewRateLimiter speedLimiter = new SlewRateLimiter(2.7);
+    private SlewRateLimiter rotLimiter = new SlewRateLimiter(2.7);
 
     SupplyCurrentLimitConfiguration currentLmt = new SupplyCurrentLimitConfiguration(true, 30, 60, .2);
 
@@ -85,7 +85,7 @@ public class Drivetrain extends SubsystemBase{
     public void ArcadeOpenLoop(double magnitude, double rotation, boolean maxSpeed, boolean climbMode){
         magnitude = magnitude * -1;
         if(!climbMode){
-            drive.arcadeDrive((maxSpeed ? magnitude : magnitude * 0.95), (maxSpeed ? rotation : rotation * 0.95));
+            drive.arcadeDrive(speedLimiter.calculate(magnitude), rotLimiter.calculate(rotation));
         }else{
             drive.arcadeDrive(magnitude * 0.4, rotation * 0.4);
         }

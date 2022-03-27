@@ -27,7 +27,7 @@ public class ClimberArm extends SubsystemBase {
 
         climberArmMotor.setInverted(true);
         climberArmMotor.setSelectedSensorPosition(0);
-        climberArmMotor.config_kP(0, 0.04);
+        climberArmMotor.config_kP(0, 0.1);
     }
 
     public void ClimberOpenLoop(double demandArm){
@@ -52,6 +52,7 @@ public class ClimberArm extends SubsystemBase {
     }
 
     public void ClimberArmToSetpoint(double setpoint){
+        climberArmMotor.set(ControlMode.Position, setpoint);
         holdsetpointA = setpoint;
     }
 

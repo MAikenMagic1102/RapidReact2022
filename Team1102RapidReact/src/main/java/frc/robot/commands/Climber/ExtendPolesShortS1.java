@@ -4,11 +4,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Climber;
 
-public class ExtendPolesFull extends CommandBase{
-    
+public class ExtendPolesShortS1 extends CommandBase{
+        
     private final Climber m_climb;
 
-    public ExtendPolesFull(Climber climb){
+    public ExtendPolesShortS1(Climber climb){
         m_climb = climb;
         addRequirements(climb);
     }
@@ -17,7 +17,7 @@ public class ExtendPolesFull extends CommandBase{
 
     @Override 
     public void execute(){
-        m_climb.ClimberPolesToSetpoint(Constants.ClimberExtendedFull);
+        m_climb.ClimberPolesToSetpoint(Constants.ClimberExtendedShortS1);
         isFinished = true;
     }
 

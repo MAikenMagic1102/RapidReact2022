@@ -19,7 +19,7 @@ public class ClimberCommands {
     }
 
     public Command pullUpFromGround(){
-        return retractPoles().alongWith(new WaitCommand(5).andThen(armOnBar()));
+        return retractPoles().alongWith(new WaitCommand(2).andThen(armOnBar()));
     }
 
     public Command releasePolesfromBar(){

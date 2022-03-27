@@ -114,6 +114,8 @@ public class Climber extends SubsystemBase {
     }
 
     public void ClimberPolesToSetpoint(double setpoint){
+        climberPoleLeft.set(ControlMode.Position, setpoint);
+        climberPoleRight.set(ControlMode.Position, setpoint);
         holdsetpointL = setpoint;
         holdsetpointR = setpoint;
     }
